@@ -14,11 +14,14 @@ RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linu
 RUN apt clean && \
     rm /nvim-linux64.tar.gz
 
+# required for copilot.lua
+RUN apt install -y nodejs 
+
 WORKDIR /root
 
 RUN mkdir -p /root/.config/nvim
 
 COPY ./ /root/.config/nvim/
 
-RUN nvim --headless +PlugInstall +qall && \
+RUN nvim --headless PlugInstall +qall && \
     nvim --headless +"MasonInstall lua-language-server stylua" +qall
