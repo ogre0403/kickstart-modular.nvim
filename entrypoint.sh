@@ -1,5 +1,6 @@
 #!/bin/bash
 
 
-/usr/local/bin/nvim
+source /root/.nvm/nvm.sh
+/usr/local/bin/nvim $1
 

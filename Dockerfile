@@ -46,6 +46,4 @@ RUN apt install -y locales && \
 
 
 COPY ./entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["bash","-c", "-l", "/entrypoint.sh"]
-
-#CMD ["bash","-c", "-l", "nvim"]
+ENTRYPOINT ["/entrypoint.sh"]
