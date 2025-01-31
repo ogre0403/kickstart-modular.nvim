@@ -31,9 +31,21 @@ RUN /bin/bash -l -c "nvm install ${NODE_VERSION}" && \
 
 RUN mkdir -p /root/.config/nvim
 
-COPY ./ /root/.config/nvim/
+COPY ./lua      /root/.config/nvim/lua
+COPY ./init.lua /root/.config/nvim/
 
 RUN bash -l -c "nvim --headless PlugInstall +qall" && \
     bash -l -c "nvim --headless +\"MasonInstall lua-language-server stylua\" +qall"
 
-CMD ["bash","-c", "-l", "nvim"]
+
+RUN apt install -y locales && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen  && \
+    locale-gen && \
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 && \
+    echo "export LANG=en_US.UTF-8" >> /root/.bashrc
+
+
+COPY ./entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["bash","-c", "-l", "/entrypoint.sh"]
+
+#CMD ["bash","-c", "-l", "nvim"]
