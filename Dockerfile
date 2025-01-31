@@ -1,4 +1,4 @@
-FROM debian:12-slim
+FROM --platform=$BUILDPLATFORM debian:12-slim
 
 RUN apt update && \
     apt install -y make gcc ripgrep unzip git xclip curl fzf
@@ -9,16 +9,24 @@ ENV NVM_VERSION=v0.40.0
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION=20
 
+RUN if [ "$BUILDPLATFORM" = "linux/arm64" ]; then \
+        echo "Download ARM64 version"; \
+        curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-arm64.tar.gz ; \
+    else \
+        echo "Download AMD64 version"; \
+        curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz ;\
+    fi
 
-RUN curl -LO https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz && \
-    rm -rf /opt/nvim-linux-x86_64 && \
-    mkdir -p /opt/nvim-linux-x86_64 && \
-    chmod a+rX /opt/nvim-linux-x86_64 && \
-    tar -C /opt -xzf nvim-linux-x86_64.tar.gz &&\
-    ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/
+RUN rm -rf /opt/nvim-linux && \
+    mkdir -p /opt/nvim-linux && \
+    chmod a+rX /opt/nvim-linux && \
+    tar -C /opt/nvim-linux --strip-components=1 -xzf nvim-linux.tar.gz &&\
+    ln -sf /opt/nvim-linux/bin/nvim /usr/local/bin/
+
+
 
 RUN apt clean && \
-    rm /nvim-linux-x86_64.tar.gz
+    rm /nvim-linux.tar.gz
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash && \ 
     echo 'source $NVM_DIR/nvm.sh' >> /etc/profile
