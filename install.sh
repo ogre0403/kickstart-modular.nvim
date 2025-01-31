@@ -23,11 +23,6 @@ nvim() {
   local nvim_vol=nvim
   docker volume create $nvim_vol > /dev/null
 
-  local real_path=$1
-  if [ -L $1 ]; then
-    real_path=$(readlink -f $1)
-  fi
-
   if [ -z "$1" ]; then
     docker run -it --rm \
     -e AZURE_OPENAI_API_KEY=$OPENAI_API_KEY \
@@ -36,6 +31,11 @@ nvim() {
     -w /workspace \
     ${image}
     return 0
+  fi
+
+  local real_path=$1
+  if [ -L $1 ]; then
+    real_path=$(readlink -f $1)
   fi
 
   folder_name=`dirname "$(realpath $real_path)"`
@@ -67,7 +67,10 @@ install_fun() {
         echo "Function $function_name already exists in $zshrc_path"
     else
         # 使用 sed 提取並追加函數定義
-        echo "\n\n\n" >> $zshrc_path
+        echo "
+
+        " >> $zshrc_path
+
         sed -n "/^[[:space:]]*${function_name}()/,/^}/p" "$source_file_path" >> "$zshrc_path"
         echo "Function $function_name has been added to $zshrc_path"
     fi
