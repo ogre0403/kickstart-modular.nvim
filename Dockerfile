@@ -49,8 +49,7 @@ RUN bash -l -c "nvim --headless PlugInstall +qall" && \
 RUN apt install -y locales && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen  && \
     locale-gen && \
-    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 && \
-    echo "export LANG=en_US.UTF-8" >> /root/.bashrc
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 
 COPY ./entrypoint.sh /entrypoint.sh
