@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM debian:12-slim
 
 RUN apt update && \
-    apt install -y make gcc ripgrep unzip git xclip curl fzf
+    apt install -y make gcc ripgrep unzip git xclip curl fzf wget 
 
 
 ENV NVIM_VERSION=v0.10.4
@@ -34,7 +34,9 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install
 
 RUN /bin/bash -l -c "nvm install ${NODE_VERSION}" && \
     /bin/bash -l -c "nvm use ${NODE_VERSION}" && \
-    /bin/bash -l -c "npm install -g tree-sitter-cli"
+    /bin/bash -l -c "npm install -g tree-sitter-cli" && \
+    /bin/bash -l -c "npm install -g neovim"
+
 
 
 RUN mkdir -p /root/.config/nvim
