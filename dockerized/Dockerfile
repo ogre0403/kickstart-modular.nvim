@@ -32,10 +32,13 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install
     echo 'source $NVM_DIR/nvm.sh' >> /etc/profile
 
 
+ENV NPM_PKG_VER_NEOVIM=5.3.0
+ENV NPM_PKG_VER_TREE_SITTER=0.24.7
+
 RUN /bin/bash -l -c "nvm install ${NODE_VERSION}" && \
     /bin/bash -l -c "nvm use ${NODE_VERSION}" && \
-    /bin/bash -l -c "npm install -g tree-sitter-cli" && \
-    /bin/bash -l -c "npm install -g neovim"
+    /bin/bash -l -c "npm install -g tree-sitter-cli@${NPM_PKG_VER_TREE_SITTER}" && \
+    /bin/bash -l -c "npm install -g neovim@${NPM_PKG_VER_NEOVIM}"
 
 
 
