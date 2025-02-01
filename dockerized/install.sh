@@ -3,7 +3,7 @@ nvim() {
   local image=ogre0403/nvim:latest
 
   # check nvim:latest image exist locally or not
-  if [ -z "$(docker images -q $1 2> /dev/null)" ]; then
+  if [ -z "$(docker images -q $image 2> /dev/null)" ]; then
 
     # download https://github.com/ogre0403/kickstart-modular.nvim.git into a random named folder under /tmp
     random_name=`date +%s`
