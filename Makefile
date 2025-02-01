@@ -1,6 +1,7 @@
 
 IMG_NAME = "ogre0403/nvim:latest"
-SHELL_PROFILE = ${HOME}/.zshrc
+ZSH_PROFILE = ${HOME}/.zshrc
+BASH_PROFILE = ${HOME}/.bahrc
 
 all : build install
 .PHONY : all
@@ -11,5 +12,7 @@ build:
 
 .PHONY: install
 install:
-	./dockerized/install.sh $(SHELL_PROFILE)
+	@if [ -f $(ZSH_PROFILE) ];  then ./dockerized/install.sh $(ZSH_PROFILE);  fi
+	@if [ -f $(BASH_PROFILE) ]; then ./dockerized/install.sh $(BASH_PROFILE); fi
+
 	
