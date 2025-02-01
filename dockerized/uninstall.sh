@@ -34,4 +34,3 @@ if [ "$#" -ne 1 ]; then
 fi
 
 uninstall nvim $1
-uninstall build_nvim_image $1

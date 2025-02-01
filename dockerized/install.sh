@@ -1,24 +1,18 @@
-build_nvim_image(){
-   # check nvim:latest image exist locally or not
-    if [ -z "$(docker images -q $1 2> /dev/null)" ]; then
-
-        # download https://github.com/ogre0403/kickstart-modular.nvim.git into a random named folder under /tmp
-        random_name=`date +%s`
-        mkdir -p /tmp/$random_name
-        git clone https://github.com/ogre0403/kickstart-modular.nvim.git /tmp/$random_name
-
-        cd /tmp/$random_name
-        docker build -t $1 .
-        cd -
-        rm -rf /tmp/$random_name
-    fi
-}
-
-
 nvim() {
 
   local image=ogre0403/nvim:latest
-  build_nvim_image $image
+
+  # check nvim:latest image exist locally or not
+  if [ -z "$(docker images -q $1 2> /dev/null)" ]; then
+
+    # download https://github.com/ogre0403/kickstart-modular.nvim.git into a random named folder under /tmp
+    random_name=`date +%s`
+    mkdir -p /tmp/$random_name
+    git clone https://github.com/ogre0403/kickstart-modular.nvim.git /tmp/$random_name
+
+    make -C /tmp/$random_name
+    rm -rf /tmp/$random_name
+  fi
 
   local nvim_vol=nvim
   docker volume create $nvim_vol > /dev/null
@@ -86,6 +80,5 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-install_fun build_nvim_image $1
 
 install_fun nvim $1

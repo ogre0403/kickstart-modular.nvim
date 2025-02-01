@@ -52,5 +52,5 @@ RUN apt install -y locales && \
     update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 
-COPY ./entrypoint.sh /entrypoint.sh
+COPY dockerized/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
