@@ -1,30 +1,17 @@
-FROM --platform=$BUILDPLATFORM debian:12-slim
+FROM ubuntu:24.04
 
-
-# Setup Testing repository for fzf
-RUN echo ""                                     >> /etc/apt/sources.list.d/debian.sources && \
-    echo "Types: deb"                           >> /etc/apt/sources.list.d/debian.sources && \
-    echo "URIs: http://deb.debian.org/debian/"  >> /etc/apt/sources.list.d/debian.sources && \
-    echo "Suites: testing"                      >> /etc/apt/sources.list.d/debian.sources && \
-    echo "Components: main"                     >> /etc/apt/sources.list.d/debian.sources && \
-    echo "Package: *"                           >> /etc/apt/preferences.d/99pinning       && \
-    echo "Pin: release a=stable"                >> /etc/apt/preferences.d/99pinning       && \
-    echo "Pin-Priority: 900"                    >> /etc/apt/preferences.d/99pinning       && \
-    echo ""                                     >> /etc/apt/preferences.d/99pinning       && \
-    echo "Package: *"                           >> /etc/apt/preferences.d/99pinning       && \
-    echo "Pin: release a=testing"               >> /etc/apt/preferences.d/99pinning       && \
-    echo "Pin-Priority: 400"                    >> /etc/apt/preferences.d/99pinning
 
 
 RUN apt update && \
-    apt install -y make gcc ripgrep unzip git xclip curl wget && \ 
-    apt install -t testing fzf 
+    apt install -y make gcc ripgrep unzip git xclip curl wget fzf
 
 ENV NVIM_VERSION=v0.10.4
 ENV NVM_VERSION=v0.40.0
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION=20
 
+
+ARG BUILDPLATFORM
 RUN if [ "$BUILDPLATFORM" = "linux/arm64" ]; then \
         echo "Download ARM64 version"; \
         curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-arm64.tar.gz ; \
