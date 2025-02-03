@@ -4,6 +4,9 @@ return {
     event = 'VeryLazy',
     lazy = false,
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+    keys = {
+      { '<c-a>', '<esc>:AvanteToggle <cr>', mode = { 'i', 'n' }, desc = 'Avante Windows' },
+    },
     opts = {
       -- add any opts here
       provider = 'azure',
