@@ -70,8 +70,10 @@ RUN mkdir -p /root/.config/nvim
 COPY ./lua      /root/.config/nvim/lua
 COPY ./init.lua /root/.config/nvim/
 
-RUN bash -l -c "nvim --headless PlugInstall +qall" && \
-    bash -l -c "nvim --headless +\"MasonInstall lua-language-server stylua shfmt\" +qall"
+RUN bash -l -c "nvim --headless PlugInstall +qall"                                        && \
+    bash -l -c "nvim --headless +\"MasonInstall lua-language-server  stylua     \" +qall" && \
+    bash -l -c "nvim --headless +\"MasonInstall bash-language-server shfmt      \" +qall" && \
+    bash -l -c "nvim --headless +\"MasonInstall yaml-language-server            \" +qall"
 
 
 COPY dockerized/entrypoint.sh /entrypoint.sh
