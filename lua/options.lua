@@ -64,4 +64,6 @@ vim.opt.scrolloff = 10
 -- https://www.jmaguire.tech/posts/treesitter_folding/
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+
+vim.opt.tabstop = 4
 -- vim: ts=2 sts=2 sw=2 et
