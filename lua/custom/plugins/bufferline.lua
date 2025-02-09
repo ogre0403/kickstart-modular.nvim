@@ -7,6 +7,11 @@ return {
     config = function()
       require('bufferline').setup {
         options = {
+          always_show_bufferline = true,
+          numbers = function(opts)
+            return string.format('%s', opts.ordinal)
+          end,
+
           offsets = {
             {
               filetype = 'neo-tree',
@@ -17,6 +22,9 @@ return {
           },
         },
       }
+
+      vim.keymap.set('n', '<S-l>', '<CMD>BufferLineCycleNext<CR>')
+      vim.keymap.set('n', '<S-h>', '<CMD>BufferLineCyclePrev<CR>')
     end,
   },
 }
