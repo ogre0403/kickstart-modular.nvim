@@ -17,47 +17,58 @@ RUN apt install -y locales && \
     update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 
-ENV NVIM_VERSION=v0.10.4
-ENV NVM_VERSION=v0.40.0
+ENV NVIM_VERSION=0.10.4
+ENV NVM_VERSION=0.40.0
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION=20
 ENV FZF_VERSION=0.59.0
+ENV FD_VERSION=10.2.0
 
 
 # Install Specific version 
 ARG BUILDPLATFORM
 RUN if [ "$BUILDPLATFORM" = "linux/arm64" ]; then \
         echo "Download ARM66 version"; \
-        curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-arm64.tar.gz ; \
+        curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-arm64.tar.gz ; \
         curl -o fzf.tar.gz        -L https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_arm64.tar.gz ; \
+        curl -o fd.tar.gz         -L https://github.com/sharkdp/fd/releases/download/v${FD_VERSION}/fd-v${FD_VERSION}-aarch64-unknown-linux-gnu.tar.gz ; \
     else \
         echo "Download AMD64 version"; \
-        curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz ;\
+        curl -o nvim-linux.tar.gz -L https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-x86_64.tar.gz ;\
         curl -o fzf.tar.gz        -L https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz ; \
+        curl -o fd.tar.gz         -L https://github.com/sharkdp/fd/releases/download/v${FD_VERSION}/fd-v${FD_VERSION}-x86_64-unknown-linux-gnu.tar.gz ; \
     fi
 
 
 RUN echo "Install nvim ${NVIM_VERSION} from binary" && \
-    rm -rf /opt/nvim-linux                          && \
-    mkdir -p /opt/nvim-linux                        && \
+    rm    -rf  /opt/nvim-linux                      && \
+    mkdir -p   /opt/nvim-linux                      && \
     chmod a+rX /opt/nvim-linux                      && \
-    tar -C /opt/nvim-linux --strip-components=1 -xzf nvim-linux.tar.gz &&\
-    ln -sf /opt/nvim-linux/bin/nvim /usr/local/bin/ && \
-    echo ""                                         &&\
+    tar   -C   /opt/nvim-linux --strip-components=1 -xzf nvim-linux.tar.gz &&\
+    ln    -sf  /opt/nvim-linux/bin/nvim /usr/local/bin/ && \
+    echo ""                                         && \
     echo "Install fzf ${FZF_VERSION} from binary"   && \
-    rm -rf /opt/fzf                                 && \
-    mkdir -p /opt/fzf                               && \
+    rm    -rf  /opt/fzf                             && \
+    mkdir -p   /opt/fzf                             && \
     chmod a+rX /opt/fzf                             && \
-    tar -C /opt/fzf -xzf fzf.tar.gz                 &&\
-    ln -sf /opt/fzf/fzf /usr/local/bin/
+    tar   -C   /opt/fzf -xzf fzf.tar.gz             && \
+    ln    -sf  /opt/fzf/fzf /usr/local/bin/         && \
+    echo ""                                         && \
+    echo "Install fzf ${FD_VERSION} from binary"    && \
+    rm    -rf  /opt/fd                              && \
+    mkdir -p   /opt/fd                              && \
+    chmod a+rX /opt/fd                              && \
+    tar   -C   /opt/fd --strip-components=1 -xzf fd.tar.gz &&\
+    ln    -sf  /opt/fd/fd /usr/local/bin/ 
 
 
-RUN apt clean && \
-    rm /nvim-linux.tar.gz  && \
-    rm /fzf.tar.gz
+RUN apt clean               && \
+    rm /nvim-linux.tar.gz   && \
+    rm /fzf.tar.gz          && \ 
+    rm /fd.tar.gz
 
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash && \ 
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash && \ 
     echo 'source $NVM_DIR/nvm.sh' >> /etc/profile
 
 
