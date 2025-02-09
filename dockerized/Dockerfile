@@ -2,7 +2,13 @@ FROM ubuntu:24.04
 
 
 RUN apt update && \
-    apt install -y make gcc ripgrep unzip git xclip curl wget
+    apt install -y make gcc ripgrep unzip git curl wget
+
+
+RUN apt install -y tmux && \
+    echo 'set -g status off'                >> /root/.tmux.conf && \
+    echo 'set-option -sg escape-time 10'    >> /root/.tmux.conf && \
+    echo 'set-option -g focus-events on'    >> /root/.tmux.conf
 
 
 RUN apt install -y locales && \
