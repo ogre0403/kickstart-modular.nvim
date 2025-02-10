@@ -23,8 +23,8 @@ return {
         },
       }
 
-      vim.keymap.set('n', '<S-l>', '<CMD>BufferLineCycleNext<CR>')
-      vim.keymap.set('n', '<S-h>', '<CMD>BufferLineCyclePrev<CR>')
+      vim.keymap.set('n', '<S-Right>', '<CMD>BufferLineCycleNext<CR>')
+      vim.keymap.set('n', '<S-Left>', '<CMD>BufferLineCyclePrev<CR>')
     end,
   },
 }
